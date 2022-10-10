@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(HomePageController.class)
 public class TestHomePageController {
 
-    public MockMvc mockMvc = MockMvcBuilders.standaloneSetup(HomePageController.class).build();;
+    public MockMvc mockMvc = MockMvcBuilders.standaloneSetup(HomePageController.class).build();
 
     @Test
     public void testHomePage() throws Exception {
