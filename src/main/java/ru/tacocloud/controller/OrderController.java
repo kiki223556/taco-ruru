@@ -1,7 +1,10 @@
 package ru.tacocloud.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +27,13 @@ public class OrderController {
     // 因為在orderForm template的表單內把action設為/orders地址
     // 這裡要有method能夠接收
     @PostMapping
-    public String processOrder(TacoOrder order) {
+    public String processOrder(@Valid TacoOrder order, Errors errors) {
+        // 假如驗證沒通過，print errors
+        if (errors.hasErrors()) {
+            log.warn(String.format("error: %s", errors.getAllErrors()));
+            return "orderForm";
+        }
+
         log.info("Order submitted: " + order); // print log
         return "redirect:/"; // 重新導向至根目錄
     }

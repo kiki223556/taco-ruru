@@ -4,8 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,10 +67,19 @@ public class DesignTacoController {
 
     // 目前沒做啥事，重新導向redirect至其他頁面
     // 用來處理/design template內的form表單所填寫的內容
+    // @Valid告訴spring要去驗證內容
     @PostMapping
-    public String processTaco(Taco taco) {
-        // Save the taco...
-        // We'll do this in chapter 3
+    public String processTaco(@Valid @ModelAttribute("taco") Taco taco,
+            Errors errors) {
+        // 假如前端表單格式不對，無法新建taco物件，會產生error
+        // 則回到上一頁design處
+        if (errors.hasErrors()) {
+            // print錯誤訊息
+            log.warn(String.format("error: %s", errors.getFieldError()));
+            return "design";
+        }
+
+        // 成功的話，儲存 taco...
         log.info("Processing taco: " + taco); // 日誌print
         return "redirect:/orders/current";
     }
