@@ -16,8 +16,11 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+
+    <!-- starter沒有自己的library code，其功能為引入其他需要的library-->
     <dependencies>
         <dependency>
+            <!-- thymeleaf：是一種模板引擎，讓網站實現介面與資料分離-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
@@ -26,6 +29,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--devtools：提供Spring開發者使用的功能
+            1.當code改變時，程式自動重啟(load 2 classes in JVM,code & dependency library)
+            2.當瀏覽器的目標資源改變時(template,javascript,stylesheet...)，瀏覽器自動刷新
+            3.自動關閉模板快取，即時刷新畫面
+            4.Built in H2 Console, if the H2 database is in use
+            -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -53,6 +62,7 @@
         </dependency>
     </dependencies>
 
+    <!--    本專案使用maven執行(透過pom.xml配置依賴，管理jar包)-->
     <build>
         <plugins>
             <plugin>
@@ -70,6 +80,7 @@
         </plugins>
     </build>
 
+    <!--倉庫    -->
     <repositories>
         <repository>
             <id>spring-milestones</id>
