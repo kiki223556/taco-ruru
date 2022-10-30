@@ -3,12 +3,9 @@ package ru.tacocloud.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +19,10 @@ import ru.tacocloud.model.IngredientType;
 import ru.tacocloud.model.Taco;
 import ru.tacocloud.model.TacoOrder;
 
-@Slf4j // Lombok-provided annotation. Automatically generate Logger at compilation.
-@Controller // as controller, scanning.
-@RequestMapping("/design") // handle requests whose path begins with /design.
-@SessionAttributes("tacoOrder") // put into model and maintain
+@Slf4j // Lombok提供的註解，在編譯時自動生成紀錄，是一種日誌記錄的框架。
+@Controller // 可被掃瞄並被辨識為controller，Spring將自動生成@DesignTacoController的實例bean。
+@RequestMapping("/design") // 使此controller能處理路徑為("/design")的請求。
+@SessionAttributes("tacoOrder") // 存取tacoOrder資料，並在此會話範圍內維護資料(完成訂單需要很多步驟，直到完成前都要記住當前操作)。
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepo;
@@ -47,6 +44,7 @@ public class DesignTacoController {
         }
     }
 
+    // 將它命名為tacoOrder，並放進資料裡，使@SessionAttributes可以使用
     @ModelAttribute(name = "tacoOrder")
     public TacoOrder order() {
         return new TacoOrder();
@@ -57,6 +55,7 @@ public class DesignTacoController {
         return new Taco();
     }
 
+    // 跟@RequestMapping一組，當接收到http("/design")請求，執行showDesignForm()回傳("design")頁面。
     // 導向至/design時自動觸發
     // design為視圖view得名稱
     @GetMapping
@@ -64,30 +63,26 @@ public class DesignTacoController {
         return "design";
     }
 
-    // 目前沒做啥事，重新導向redirect至其他頁面
-    // 用來處理/design template內的form表單所填寫的內容
-    // @Valid告訴spring要去驗證內容
+    // 處理form POST請求
+    // 當表單提交時，表單內存著Taco物件特性，並將Taco作為參數傳入方法
+    // 此處方法將taco作為addTaco()參數加入tacoOrder物件，並記錄
     @PostMapping
-    public String processTaco(@Valid @ModelAttribute("taco") Taco taco,
-            Errors errors) {
-        // 假如前端表單格式不對，無法新建taco物件，會產生error
-        // 則回到上一頁design處
-        if (errors.hasErrors()) {
-            // print錯誤訊息
-            log.warn(String.format("error: %s", errors.getFieldError()));
-            return "design";
-        }
-
-        // 成功的話，儲存 taco...
-        log.info("Processing taco: " + taco); // 日誌print
+    public String processTaco(Taco taco,
+            @ModelAttribute TacoOrder tacoOrder) {
+        tacoOrder.addTaco(taco);
+        log.info("Processing taco: {}", taco);
         return "redirect:/orders/current";
     }
 
     private Iterable<Ingredient> filterByType(
             List<Ingredient> ingredients, IngredientType type) {
         return ingredients
-                .stream()
-                .filter(x -> x.getType().equals(type))
-                .collect(Collectors.toList());
+                .stream() // 將list創建為stream，以聲明的方式處理數據。
+                .filter(x -> x.getType().equals(type)) // filter()：過濾stream裡的元素。
+                .collect(Collectors.toList()); // toList()：將一個stream回傳成list的資料型態。
+    }
+
+    public boolean isTaco(Taco taco) {
+        return taco.getName() == "";
     }
 }
