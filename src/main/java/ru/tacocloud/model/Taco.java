@@ -1,5 +1,6 @@
 package ru.tacocloud.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,9 @@ import lombok.Data;
 
 @Data
 public class Taco {
+
+    private Long id;
+    private Date createdAt = new Date();
 
     // 新增表單限制
     // 當要創建taco物件時必須符合條件

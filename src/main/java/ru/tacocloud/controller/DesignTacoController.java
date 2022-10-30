@@ -1,11 +1,11 @@
 package ru.tacocloud.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.tacocloud.dao.IngredientRepository;
 import ru.tacocloud.model.Ingredient;
 import ru.tacocloud.model.IngredientType;
 import ru.tacocloud.model.Taco;
@@ -27,20 +28,18 @@ import ru.tacocloud.model.TacoOrder;
 @SessionAttributes("tacoOrder") // put into model and maintain
 public class DesignTacoController {
 
+    private final IngredientRepository ingredientRepo;
+
+    @Autowired
+    public DesignTacoController(
+            IngredientRepository ingredientRepo) {
+        this.ingredientRepo = ingredientRepo;
+    }
+
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("FLTO", "Flour Tortilla", IngredientType.WRAP),
-                new Ingredient("COTO", "Corn Tortilla", IngredientType.WRAP),
-                new Ingredient("GRBF", "Ground Beef", IngredientType.PROTEIN),
-                new Ingredient("CARN", "Carnitas", IngredientType.PROTEIN),
-                new Ingredient("TMTO", "Diced Tomatoes", IngredientType.VEGGIES),
-                new Ingredient("LETC", "Lettuce", IngredientType.VEGGIES),
-                new Ingredient("CHED", "Cheddar", IngredientType.CHEESE),
-                new Ingredient("JACK", "Monterrey Jack", IngredientType.CHEESE),
-                new Ingredient("SLSA", "Salsa", IngredientType.SAUCE),
-                new Ingredient("SRCR", "Sour Cream", IngredientType.SAUCE));
-
+        // fetch all ingredients from the database
+        List<Ingredient> ingredients = ingredientRepo.findAll();
         IngredientType[] types = IngredientType.values();
         for (IngredientType type : types) {
             model.addAttribute(type.toString().toLowerCase(),
