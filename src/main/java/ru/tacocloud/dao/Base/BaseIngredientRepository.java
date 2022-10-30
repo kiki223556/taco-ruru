@@ -1,4 +1,4 @@
-package ru.tacocloud.dao;
+package ru.tacocloud.dao.Base;
 
 import java.util.Optional;
 

@@ -22,5 +22,5 @@ public class Taco {
 
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<Ingredient> ingredients; // 可能是0到多選，所以用list
+    private List<IngredientRef> ingredients; // 可能是0到多選，所以用list
 }
