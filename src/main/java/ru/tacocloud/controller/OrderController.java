@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.tacocloud.dao.JdbcOrderRepository;
 import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.repository.OrderRepository;
 
 @Slf4j // 記錄日誌 -> 編譯時處理
 @Controller // 控制器處理前端傳來的請求
 @RequestMapping("/orders") // 自己的門牌位置，處理前端要求
 public class OrderController {
-    private JdbcOrderRepository orderRepo;
+    private OrderRepository orderRepo;
 
-    public OrderController(JdbcOrderRepository orderRepo) {
+    public OrderController(OrderRepository orderRepo) {
         this.orderRepo = orderRepo;
     }
 

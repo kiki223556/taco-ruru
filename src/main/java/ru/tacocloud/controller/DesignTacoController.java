@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.google.common.collect.Lists;
+
 import lombok.extern.slf4j.Slf4j;
-import ru.tacocloud.dao.IngredientRepository;
 import ru.tacocloud.model.Ingredient;
 import ru.tacocloud.model.IngredientType;
 import ru.tacocloud.model.Taco;
 import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.repository.IngredientRepository;
 
 @Slf4j // Lombok提供的註解，在編譯時自動生成紀錄，是一種日誌記錄的框架。
 @Controller // 可被掃瞄並被辨識為controller，Spring將自動生成@DesignTacoController的實例bean。
@@ -36,7 +38,8 @@ public class DesignTacoController {
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
         // fetch all ingredients from the database
-        List<Ingredient> ingredients = ingredientRepo.findAll();
+        List<Ingredient> ingredients = Lists.newArrayList(ingredientRepo.findAll());
+
         IngredientType[] types = IngredientType.values();
         for (IngredientType type : types) {
             model.addAttribute(type.toString().toLowerCase(),
@@ -74,7 +77,7 @@ public class DesignTacoController {
         return "redirect:/orders/current";
     }
 
-    private Iterable<Ingredient> filterByType(
+    private List<Ingredient> filterByType(
             List<Ingredient> ingredients, IngredientType type) {
         return ingredients
                 .stream() // 將list創建為stream，以聲明的方式處理數據。
