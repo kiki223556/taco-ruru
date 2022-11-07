@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
 
 import lombok.Data;
 
 @Data
-@Table("Taco_RuRu_Order") // 讓spring data知道對應之儲存物件，default name=>Taco_Order
+@Entity(name = "Taco_RuRu_Order") // 讓spring data知道對應之儲存物件，default name=>Taco_Order
 public class TacoOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class TacoOrder implements Serializable {
     private Long id;
     private Date placedAt;
 
-    @Column("customer_name") // 客製化col-name
+    @Column(name = "customer_name") // 客製化col-name
     @NotBlank(message = "Delivery name is required") // 新建taco order 物件須符合條件
     private String deliveryName;
 
