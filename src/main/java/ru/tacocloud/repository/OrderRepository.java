@@ -3,7 +3,6 @@ package ru.tacocloud.repository;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import ru.tacocloud.model.TacoOrder;
@@ -14,6 +13,5 @@ public interface OrderRepository extends CrudRepository<TacoOrder, Long> {
     List<TacoOrder> readOrdersByDeliveryZipAndPlacedAtBetween(
             String deliveryZip, Date startDate, Date endDate);
 
-    @Query("Order o where o.deliveryCity='Seattle'")
     List<TacoOrder> readOrdersDeliveredInSeattle();
 }

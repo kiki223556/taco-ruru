@@ -5,33 +5,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
 @Data
-@Entity(name = "Taco_RuRu_Order") // 讓spring data知道對應之儲存物件，default name=>Taco_Order
+@Document
 public class TacoOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private Date placedAt;
+    private String id;
+    private Date placedAt = new Date();
 
-    @Column(name = "customer_name") // 客製化col-name
     @NotBlank(message = "Delivery name is required") // 新建taco order 物件須符合條件
     private String deliveryName;
 
@@ -57,7 +50,6 @@ public class TacoOrder implements Serializable {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
-    @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco) {
