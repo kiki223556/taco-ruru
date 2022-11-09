@@ -2,6 +2,7 @@ package ru.tacocloud.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,6 +21,7 @@ import ru.tacocloud.repository.OrderRepository;
 public class OrderController {
     private OrderRepository orderRepo;
 
+    @Autowired
     public OrderController(OrderRepository orderRepo) {
         this.orderRepo = orderRepo;
     }

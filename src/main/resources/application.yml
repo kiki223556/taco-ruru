@@ -4,6 +4,9 @@ spring:
   name: tacocloud
   data:
     mongodb:
-      host: mongodb.tacocloud.com
-      port: 27018
-      database: tacoclouddb
+      authentication-database: admin
+      username: root
+      password: root
+      database: lin
+      port: 27017
+      uri: mongodb://localhost:27017/springtest
