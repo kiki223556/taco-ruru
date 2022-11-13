@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.model.taco.TacoOrder;
 import ru.tacocloud.repository.OrderRepository;
 
 @Slf4j // 記錄日誌 -> 編譯時處理

@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.google.common.collect.Lists;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.tacocloud.model.Ingredient;
-import ru.tacocloud.model.IngredientType;
-import ru.tacocloud.model.Taco;
-import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.model.taco.Ingredient;
+import ru.tacocloud.model.taco.IngredientType;
+import ru.tacocloud.model.taco.Taco;
+import ru.tacocloud.model.taco.TacoOrder;
 import ru.tacocloud.repository.IngredientRepository;
 
 @Slf4j // Lombok提供的註解，在編譯時自動生成紀錄，是一種日誌記錄的框架。

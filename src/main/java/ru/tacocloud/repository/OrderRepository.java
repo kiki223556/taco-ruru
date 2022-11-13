@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.model.taco.TacoOrder;
 
 public interface OrderRepository extends CrudRepository<TacoOrder, Long> {
     List<TacoOrder> findByDeliveryZip(String deliveryZip);
