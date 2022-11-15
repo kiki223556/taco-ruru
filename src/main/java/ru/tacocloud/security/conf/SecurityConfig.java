@@ -31,8 +31,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.build();
+        return http
+                .authorizeRequests()
+                .antMatchers("/design", "/orders").access("hasRole('USER')")
+                .antMatchers("/", "/**").access("permitAll()")
+                .and()
+                .build();
     }
+
+    // Only Tuesday has permission
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // return http
+    // .authorizeRequests()
+    // .antMatchers("/design", "/orders")
+    // .access("hasRole('USER') && " +
+    // "T(java.util.Calendar).getInstance().get(" +
+    // "T(java.util.Calendar).DAY_OF_WEEK) == " +
+    // "T(java.util.Calendar).TUESDAY")
+    // .antMatchers("/", "/**").access("permitAll")
+    // .and()
+    // .build();
+    // }
 
     // @Bean
     // public UserDetailsService userDetailsService(PasswordEncoder encoder) {
