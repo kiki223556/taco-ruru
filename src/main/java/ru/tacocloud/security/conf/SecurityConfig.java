@@ -35,6 +35,13 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/design", "/orders").access("hasRole('USER')")
                 .antMatchers("/", "/**").access("permitAll()")
+                .and() // begin new section of configuration
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticate")
+                .usernameParameter("user") // default: username
+                .passwordParameter("pwd") // default: password
+                .defaultSuccessUrl("/design", true) // force
                 .and()
                 .build();
     }
