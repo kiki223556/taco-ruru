@@ -1,12 +1,9 @@
 spring:
-  datasource:
-  generate-unique-name: false
-  name: tacocloud
-  data:
-    mongodb:
-      authentication-database: admin
-      username: root
-      password: root
-      database: lin
-      port: 27017
-      uri: mongodb://localhost:27017/springtest
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: <client id>
+            clientSecret: <client secret>
+            scope: profile, openid, email

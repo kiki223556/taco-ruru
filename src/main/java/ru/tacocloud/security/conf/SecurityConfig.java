@@ -43,6 +43,13 @@ public class SecurityConfig {
                 .passwordParameter("pwd") // default: password
                 .defaultSuccessUrl("/design", true) // force
                 .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/design", true) // force
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
                 .build();
     }
 
