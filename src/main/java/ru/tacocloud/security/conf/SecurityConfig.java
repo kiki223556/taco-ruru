@@ -2,6 +2,8 @@ package ru.tacocloud.security.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +15,7 @@ import ru.tacocloud.repository.UserRepository;
 import ru.tacocloud.security.UserDetailsService;
 
 @Configuration
+@EnableGlobalMethodSecurity
 public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,6 +36,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/admin/**")
+                .access("hasRole('ADMIN')")
                 .antMatchers("/design", "/orders").access("hasRole('USER')")
                 .antMatchers("/", "/**").access("permitAll()")
                 .and() // begin new section of configuration

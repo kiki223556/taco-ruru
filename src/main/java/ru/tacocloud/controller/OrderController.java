@@ -19,11 +19,11 @@ import ru.tacocloud.repository.OrderRepository;
 @Controller // 控制器處理前端傳來的請求
 @RequestMapping("/orders") // 自己的門牌位置，處理前端要求
 public class OrderController {
-    private OrderRepository orderRepo;
+    private OrderRepository orderRepository;
 
     @Autowired
-    public OrderController(OrderRepository orderRepo) {
-        this.orderRepo = orderRepo;
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     // 前端使用get方法，後端對應接收位置/orders/current
@@ -46,7 +46,7 @@ public class OrderController {
         }
 
         // 若通過驗證，將資料存入資料庫
-        orderRepo.save(order);
+        orderRepository.save(order);
         sessionStatus.setComplete();
 
         log.info("Order submitted: " + order); // print log
