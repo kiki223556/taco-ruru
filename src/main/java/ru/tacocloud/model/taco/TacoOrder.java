@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.data.annotation.Id;
 
 import lombok.Data;
+import ru.tacocloud.model.auth.User;
 
 @Data
 @Entity
@@ -55,6 +57,9 @@ public class TacoOrder implements Serializable {
 
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
+
+    @ManyToOne
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();

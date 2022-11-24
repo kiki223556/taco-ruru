@@ -3,6 +3,7 @@ package ru.tacocloud.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.tacocloud.model.auth.User;
 import ru.tacocloud.model.taco.TacoOrder;
 import ru.tacocloud.repository.OrderRepository;
 
@@ -19,7 +21,7 @@ import ru.tacocloud.repository.OrderRepository;
 @Controller // 控制器處理前端傳來的請求
 @RequestMapping("/orders") // 自己的門牌位置，處理前端要求
 public class OrderController {
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public OrderController(OrderRepository orderRepository) {
@@ -38,12 +40,19 @@ public class OrderController {
     @PostMapping
     public String processOrder(@Valid TacoOrder order,
             Errors errors,
-            SessionStatus sessionStatus) {
+            SessionStatus sessionStatus,
+            @AuthenticationPrincipal User user) {
         // 假如驗證沒通過，print errors，並將頁面導回order form
         if (errors.hasErrors()) {
             log.warn(String.format("error: %s", errors.getAllErrors()));
             return "orderForm";
         }
+
+        // Authentication authentication =
+        // SecurityContextHolder.getContext().getAuthentication();
+        // User user = (User) authentication.getPrincipal();
+
+        order.setUser(user);
 
         // 若通過驗證，將資料存入資料庫
         orderRepository.save(order);
