@@ -30,21 +30,24 @@ import java.util.stream.Collectors;
 @SessionAttributes("tacoOrder")  //存取tacoOrder資料，並在此會話範圍內維護資料(完成訂單需要很多步驟，直到完成前都要記住當前操作)。
 public class DesignTacoController {
 
-    private final IngredientRepository ingredientRepo;
-
-    @Autowired
-    public DesignTacoController(
-            IngredientRepository ingredientRepo) {
-        this.ingredientRepo = ingredientRepo;
-    }
     @ModelAttribute
-    // fetch all ingredients from the database
     public void addIngredientsToModel(Model model) {
-        Iterable<Ingredient> ingredients = ingredientRepo.findAll();
+        List<Ingredient> ingredients = Arrays.asList(
+                new Ingredient("FLTO", "Flour Tortilla", IngredientType.WRAP),
+                new Ingredient("COTO", "Corn Tortilla", IngredientType.WRAP),
+                new Ingredient("GRBF", "Ground Beef", IngredientType.PROTEIN),
+                new Ingredient("CARN", "Carnitas", IngredientType.PROTEIN),
+                new Ingredient("TMTO", "Diced Tomatoes", IngredientType.VEGGIES),
+                new Ingredient("LETC", "Lettuce", IngredientType.VEGGIES),
+                new Ingredient("CHED", "Cheddar", IngredientType.CHEESE),
+                new Ingredient("JACK", "Monterrey Jack", IngredientType.CHEESE),
+                new Ingredient("SLSA", "Salsa", IngredientType.SAUCE),
+                new Ingredient("SRCR", "Sour Cream", IngredientType.SAUCE));
+
         IngredientType[] types = IngredientType.values();
         for (IngredientType type : types) {
             model.addAttribute(type.toString().toLowerCase(),
-                    filterByType((List<Ingredient>) ingredients, type));
+                    filterByType(ingredients, type));
         }
     }
 
