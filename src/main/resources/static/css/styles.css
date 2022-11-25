@@ -6,3 +6,7 @@
 img {
     height: 250px;
 }
+
+.validationError {
+    color: red;
+}

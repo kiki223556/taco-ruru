@@ -1,6 +1,7 @@
 package ru.tacocloud.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -11,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.tacocloud.data.IngredientRepository;
 import ru.tacocloud.model.Ingredient;
 import ru.tacocloud.model.IngredientType;
 import ru.tacocloud.model.Taco;
 import ru.tacocloud.model.TacoOrder;
 
 import javax.validation.Valid;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,24 +30,21 @@ import java.util.stream.Collectors;
 @SessionAttributes("tacoOrder")  //存取tacoOrder資料，並在此會話範圍內維護資料(完成訂單需要很多步驟，直到完成前都要記住當前操作)。
 public class DesignTacoController {
 
-    @ModelAttribute
-    public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = Arrays.asList(
-                new Ingredient("FLTO", "Flour Tortilla", IngredientType.WRAP),
-                new Ingredient("COTO", "Corn Tortilla", IngredientType.WRAP),
-                new Ingredient("GRBF", "Ground Beef", IngredientType.PROTEIN),
-                new Ingredient("CARN", "Carnitas", IngredientType.PROTEIN),
-                new Ingredient("TMTO", "Diced Tomatoes", IngredientType.VEGGIES),
-                new Ingredient("LETC", "Lettuce", IngredientType.VEGGIES),
-                new Ingredient("CHED", "Cheddar", IngredientType.CHEESE),
-                new Ingredient("JACK", "Monterrey Jack", IngredientType.CHEESE),
-                new Ingredient("SLSA", "Salsa", IngredientType.SAUCE),
-                new Ingredient("SRCR", "Sour Cream", IngredientType.SAUCE));
+    private final IngredientRepository ingredientRepo;
 
+    @Autowired
+    public DesignTacoController(
+            IngredientRepository ingredientRepo) {
+        this.ingredientRepo = ingredientRepo;
+    }
+    @ModelAttribute
+    // fetch all ingredients from the database
+    public void addIngredientsToModel(Model model) {
+        Iterable<Ingredient> ingredients = ingredientRepo.findAll();
         IngredientType[] types = IngredientType.values();
         for (IngredientType type : types) {
             model.addAttribute(type.toString().toLowerCase(),
-                    filterByType(ingredients, type));
+                    filterByType((List<Ingredient>) ingredients, type));
         }
     }
 
@@ -70,12 +70,19 @@ public class DesignTacoController {
     //處理form POST請求
     //當表單提交時，表單內存著Taco物件特性，並將Taco作為參數傳入方法
     //此處方法將taco作為addTaco()參數加入tacoOrder物件，並記錄
+    //因為已宣告taco和tacoOrder應被驗證，所以當表單要post時應要執行valid方法
+    //@Valid:告訴Spring MVC在提交taco後需先驗證，才能執行processTaco()
     @PostMapping
-    public String processTaco(Taco taco,
+    public String processTaco(@Valid Taco taco, Errors errors,
                               @ModelAttribute TacoOrder tacoOrder) {
+        if (errors.hasErrors()) {
+            log.info("has error: {}", errors.getAllErrors());
+            return "design"; // 若驗證有誤，則重新導入design頁面
+        }
+
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
-        return "redirect:/orders/current";
+        return "redirect:/orders/current"; // 完成訂單後重新導入到(/orders/current)頁面
     }
 
     private Iterable<Ingredient> filterByType(

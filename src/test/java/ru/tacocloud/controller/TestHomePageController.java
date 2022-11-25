@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //告訴Spring boot只需要測試此特定controller bean，以及其他mvc所需框架bean
 //如果沒有寫特定的controller，則程式會跑全部的controller，浪費時間且又沒效率
 @AutoConfigureMockMvc
-@WebMvcTest(HomePageController.class)
 public class TestHomePageController {
 
     //建立執行此controller所需模擬MVC的環境
