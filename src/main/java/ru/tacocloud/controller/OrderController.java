@@ -3,6 +3,8 @@ package ru.tacocloud.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.tacocloud.model.OrderProps;
 import ru.tacocloud.model.auth.User;
 import ru.tacocloud.model.taco.TacoOrder;
 import ru.tacocloud.repository.OrderRepository;
@@ -22,10 +25,12 @@ import ru.tacocloud.repository.OrderRepository;
 @RequestMapping("/orders") // 自己的門牌位置，處理前端要求
 public class OrderController {
     private final OrderRepository orderRepository;
+    private final OrderProps props;
 
     @Autowired
-    public OrderController(OrderRepository orderRepository) {
+    public OrderController(OrderRepository orderRepository, OrderProps props) {
         this.orderRepository = orderRepository;
+        this.props = props;
     }
 
     // 前端使用get方法，後端對應接收位置/orders/current
@@ -60,5 +65,14 @@ public class OrderController {
 
         log.info("Order submitted: " + order); // print log
         return "redirect:/"; // 重新導向至根目錄
+    }
+
+    @GetMapping
+    public String ordersForUser(
+            @AuthenticationPrincipal User user, Model model) {
+        Pageable pageable = PageRequest.of(0, props.getPageSize());
+        model.addAttribute("orders",
+                orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+        return "orderList";
     }
 }

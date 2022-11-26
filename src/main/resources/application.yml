@@ -7,3 +7,21 @@ spring:
             clientId: <client id>
             clientSecret: <client secret>
             scope: profile, openid, email
+  datasource:
+    url: jdbc:mysql:/ /localhost/tacocloud
+    username: tacouser
+    password: tacopassword
+    driver-class-name: com.mysql.jdbc.Driver
+
+server:
+  port: 9090
+
+logging:
+  level:
+    root: WARN
+    org:
+    springframework:
+    security: DEBUG
+taco:
+  orders:
+    pageSize: 10
