@@ -4,13 +4,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.tacocloud.data.IngredientRepository;
-import ru.tacocloud.model.Ingredient;
-import ru.tacocloud.model.IngredientType;
-
-import java.beans.BeanProperty;
+import ru.tacocloud.model.taco.Ingredient;
+import ru.tacocloud.model.taco.IngredientType;
 
 /*
 @SpringBootApplication為executable JAR運行時的切入點，包含以下3個註解

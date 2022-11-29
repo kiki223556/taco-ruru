@@ -1,15 +1,11 @@
 package ru.tacocloud.converter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import ru.tacocloud.data.IngredientRepository;
-import ru.tacocloud.model.Ingredient;
-import ru.tacocloud.model.IngredientType;
+import ru.tacocloud.model.taco.Ingredient;
 
 // 假如前端form內傳向後端資料為string型態，為將其轉換為ingredient型態
 // 使用converter轉換型值 string -> ingredient

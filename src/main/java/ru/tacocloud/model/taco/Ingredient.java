@@ -1,4 +1,4 @@
-package ru.tacocloud.model;
+package ru.tacocloud.model.taco;
 
 //lombok：語法糖，在編譯時自動生成執行所需JavaBean methods，包含@Getter, @Setter, @ToString等。
 import lombok.*;
