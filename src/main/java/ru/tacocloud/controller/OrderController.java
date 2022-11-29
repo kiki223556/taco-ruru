@@ -3,6 +3,7 @@ package ru.tacocloud.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.tacocloud.data.OrderRepository;
-import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.model.auth.User;
+import ru.tacocloud.model.taco.TacoOrder;
 
 @Slf4j // 記錄日誌 -> 編譯時處理
 @Controller // 控制器處理前端傳來的請求
@@ -34,16 +36,22 @@ public class OrderController {
 
     // 因為在orderForm template的表單內把action設為/orders地址
     // 這裡要有method能夠接收
+    // 儲存order表單
     @PostMapping
     public String processOrder(@Valid TacoOrder order, Errors errors,
-                               SessionStatus sessionStatus) {
+                               SessionStatus sessionStatus,
+                               @AuthenticationPrincipal User user) {
         // 假如驗證沒通過，print errors
         if (errors.hasErrors()) {
             log.warn(String.format("error: %s", errors.getAllErrors())); // 偵測錯誤
             return "orderForm";
         }
 
+        order.setUser(user);
+        orderRepository.save(order);
+
         log.info("Order submitted: {}", order); // print log
+
         sessionStatus.setComplete();
         return "redirect:/"; // 重新導向至根目錄
     }

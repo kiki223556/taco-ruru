@@ -1,4 +1,4 @@
-package ru.tacocloud.model;
+package ru.tacocloud.model.taco;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,9 +10,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import lombok.Data;
+import ru.tacocloud.model.auth.User;
 
 @Data
 @Entity
+@Table(name = "Taco_Order")
 public class TacoOrder implements Serializable {
 
     // persisting object
@@ -52,8 +54,13 @@ public class TacoOrder implements Serializable {
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
 
-    @OneToMany(cascade= CascadeType.ALL) // Tacos只對應此Order，若刪除此Order將一併刪除所對應的Tacos
+    // Tacos只對應此Order，若刪除此Order將一併刪除所對應的Tacos
+    @OneToMany(cascade= CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
+
+    // 使User和TacoOrder表單重複的欄位可以同步連結
+    @ManyToOne
+    private User user;
 
     public void addTaco(Taco taco) {
         this.tacos.add(taco);

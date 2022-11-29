@@ -1,4 +1,4 @@
-package ru.tacocloud.model;
+package ru.tacocloud.model.taco;
 
 import java.util.ArrayList;
 import java.util.Date;

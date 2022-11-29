@@ -2,7 +2,7 @@ package ru.tacocloud.data;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.tacocloud.model.TacoOrder;
+import ru.tacocloud.model.taco.TacoOrder;
 
 public interface OrderRepository
         // 僅需對aggregate root定義repository藉以persist object，意即儲存tacoOrder便等同於儲存taco
