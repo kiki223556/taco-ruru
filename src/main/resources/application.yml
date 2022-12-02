@@ -2,8 +2,10 @@ spring:
   # database name will generate randomly, here we pin down the database name.
   # database URL will be "jdbc:h2:mem:tacocloud"
   datasource:
-  generate-unique-name: false
-  name: tacocloud
+    generate-unique-name: false
+    name: tacocloud
+    username: tacouser
+    password: tacopassword
 
   # 允許透過第三方網站驗證登入，如facebook
   security:
@@ -14,3 +16,30 @@ spring:
             clientId: <facebook client id>
             clientSecret: <facebook client secret>
             scope: email, public_profile
+
+  # logging
+  logging:
+    level:
+      tacos: DEBUG
+
+  # activating profiles
+  profiles:
+    active: -prod
+
+  # 針對orderController裡的@ConfigurationProperties做特定配置
+taco:
+  orders:
+    pageSize: 10
+
+
+  # 設置特定port
+server:
+  port: 0
+
+
+
+
+
+
+
+

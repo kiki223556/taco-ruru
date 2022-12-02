@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "taco.orders.page-size",
+      "type": "java.lang.String",
+      "description": "Sets the maximum number of orders to display in a list."
+    },
+    {
+      "name": "spring.logging.level.tacos",
+      "type": "java.lang.String",
+      "description": "Description for spring.logging.level.tacos."
+    },
+    {
+      "name": "spring.profiles.datasource.url",
+      "type": "java.lang.String",
+      "description": "Description for spring.profiles.datasource.url."
+    },
+    {
+      "name": "spring.server.port",
+      "type": "java.lang.String",
+      "description": "Description for spring.server.port."
+    }
+  ]
+}

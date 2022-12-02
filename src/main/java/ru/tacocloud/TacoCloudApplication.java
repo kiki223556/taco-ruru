@@ -4,7 +4,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.tacocloud.data.IngredientRepository;
+import ru.tacocloud.data.UserRepository;
 import ru.tacocloud.model.taco.Ingredient;
 import ru.tacocloud.model.taco.IngredientType;
 
@@ -23,7 +26,8 @@ public class TacoCloudApplication {
 
     // preloading data
     @Bean
-    public CommandLineRunner dataLoder(IngredientRepository repo) {
+    public CommandLineRunner dataLoader(IngredientRepository repo,
+                                        UserRepository userRepo, PasswordEncoder encoder) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
