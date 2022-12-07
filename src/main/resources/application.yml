@@ -34,7 +34,7 @@ taco:
 
   # 設置特定port
 server:
-  port: 0
+  port: 8080
 
 
 

@@ -13,7 +13,7 @@
             Unable to login. Check your username and password.
         </div>
 
-        <p>New here? Click<a th:href="@{/register}">here</a> to register.</p>
+        <p>New here? Click<a th:href="@{/register}"> here</a> to register.</p>
 
         <form method="POST" th:action="@{/login}" id="loginForm">
             <label for="username">Username: </label>
@@ -23,13 +23,13 @@
             <input type="submit" value="Login"/>
         </form>
 
-        <!--第三方認證登入-->
-        <a th:href="/oauth2/authorization/facebook">Sign in with Facebook</a>
+<!--        &lt;!&ndash;第三方認證登入&ndash;&gt;-->
+<!--        <a th:href="/oauth2/authorization/facebook">Sign in with Facebook</a>-->
 
-        <!--登出-->
-        <form method="POST" th:action="@{/logout}">
-            <input type="submit" value="Logout"/>
-        </form>
+<!--        &lt;!&ndash;登出&ndash;&gt;-->
+<!--        <form method="POST" th:action="@{/logout}">-->
+<!--            <input type="submit" value="Logout"/>-->
+<!--        </form>-->
 
     </body>
 </html>
